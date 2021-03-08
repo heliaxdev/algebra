@@ -14,7 +14,7 @@ use ark_std::{
     fmt::{Display, Formatter, Result as FmtResult},
     io::{Read, Result as IoResult, Write},
     marker::PhantomData,
-    ops::{Add, AddAssign, MulAssign, Neg, Sub, SubAssign},
+    ops::{Add, AddAssign, Mul, MulAssign, Neg, Sub, SubAssign},
     vec::Vec,
 };
 use num_traits::{One, Zero};
@@ -608,9 +608,17 @@ impl<'a, P: Parameters> SubAssign<&'a Self> for GroupProjective<P> {
     }
 }
 
+impl<P: Parameters> Mul<P::ScalarField> for GroupProjective<P> {
+    type Output = Self;
+
+    fn mul(self, other: P::ScalarField) -> Self {
+        ProjectiveCurve::mul(self, other.into_repr())
+    }
+}
+
 impl<P: Parameters> MulAssign<P::ScalarField> for GroupProjective<P> {
     fn mul_assign(&mut self, other: P::ScalarField) {
-        *self = self.mul(other.into_repr())
+        *self = *self * other
     }
 }
 

@@ -23,7 +23,7 @@ use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
 use ark_std::{
     fmt::{Debug, Display},
     hash::Hash,
-    ops::{Add, AddAssign, MulAssign, Neg, Sub, SubAssign},
+    ops::{Add, AddAssign, Mul, MulAssign, Neg, Sub, SubAssign},
     vec::Vec,
 };
 use num_traits::Zero;
@@ -134,6 +134,7 @@ pub trait ProjectiveCurve:
     + Zero
     + Neg<Output = Self>
     + Add<Self, Output = Self>
+    + Mul<<Self as ProjectiveCurve>::ScalarField>
     + Sub<Self, Output = Self>
     + AddAssign<Self>
     + SubAssign<Self>
